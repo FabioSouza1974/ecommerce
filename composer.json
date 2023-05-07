@@ -2,7 +2,7 @@
     "name": "virtualmachine/ecommerce",
     "autoload": {
         "psr-4": {
-            "":"vendor\\hcodebr\\php-classes\\src"
+            "Hcode\\":"vendor\\hcodebr\\php-classes\\src"
         }
     },
     "authors": [
