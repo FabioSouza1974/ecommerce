@@ -6,8 +6,8 @@ use Rain\Tpl;
 
 class Mailer
 {
-    public const USERNAME = 'fabio.f.souzae@gmail.com';
-    public const PASSWORD = '<?password?>';
+    public const USERNAME = 'golservices_msg@multprocessing.com.br';
+    public const PASSWORD = 'mpil2087';
     public const NAME_FROM = 'Hcode Store';
     private $mail;
 
@@ -18,8 +18,11 @@ class Mailer
             'cahce_dir' => $_SERVER['DOCUMENT_ROOT'] . '/views-cache/',
             'debug' => false,
         ];
+
         Tpl::configure($config);
+
         $tpl = new Tpl;
+
         foreach ($data as $key => $value) {
             $tpl->assign($key, $value);
         }

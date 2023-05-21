@@ -137,7 +137,7 @@ class User extends Model
                 $ivlen = openssl_cipher_iv_length(User::METHOD);
                 $iv = openssl_random_pseudo_bytes($ivlen);
                 $code = openssl_encrypt($dataRecovery['idrecovery'], User::METHOD, User::SECRET, 0, $iv);
-                $link = 'http://www.hcodecommerce.com.br/admin/forgot/reset?code=$code';
+                $link = 'http://www.hcodecommerce.com.br/admin/forgot/reset?code=' . $code;
                 $mailer = new Mailer($data['desemail'], $data['desperson'], 'Redefinir Senha Hcode Store', 'forgot', [
                     'name' => $data['desperson'],
                     'link' => $link,
