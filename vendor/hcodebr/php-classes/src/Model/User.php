@@ -13,6 +13,7 @@ class User extends Model
     public const METHOD = 'aes-128-cbc';
     public const ERROR = 'UserError';
     public const ERROR_REGISTER = 'UserErrorRegister';
+    public const SUCCESS = 'UserSuccess';
 
     public static function getFromSession()
     {
@@ -246,6 +247,25 @@ class User extends Model
     public static function clearError()
     {
         $_SESSION[User::ERROR] = null;
+    }
+
+    public static function setSuccess($msg)
+    {
+        $_SESSION[User::SUCCESS] = $msg;
+    }
+
+    public static function getSuccess()
+    {
+        $msg = (isset($_SESSION[User::SUCCESS]) && $_SESSION[User::SUCCESS]) ? $_SESSION[User::SUCCESS] : '';
+
+        USer::clearSuccess();
+
+        return $msg;
+    }
+
+    public static function clearSuccess()
+    {
+        $_SESSION[User::SUCCESS] = null;
     }
 
     public static function setErrorRegister($msg)
