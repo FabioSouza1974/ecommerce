@@ -153,7 +153,8 @@ class User extends Model
             ':iduser' => $this->getiduser(),
         ]);
     }
-    public static function getForgot($email)
+
+    public static function getForgot($email, $inadmin = true)
     {
         $sql = new Sql();
         $results = $sql->select('SELECT * FROM tb_persons a INNER JOIN tb_users b USING(idperson) WHERE a.desemail = :email', [
@@ -177,7 +178,11 @@ class User extends Model
                 $ivlen = openssl_cipher_iv_length(User::METHOD);
                 $iv = openssl_random_pseudo_bytes($ivlen);
                 $code = openssl_encrypt($dataRecovery['idrecovery'], User::METHOD, User::SECRET, 0, $iv);
-                $link = 'http://www.hcodecommerce.com.br/admin/forgot/reset?code=' . $code;
+                if ($inadmin == true) {
+                    $link = 'http://www.hcodecommerce.com.br/admin/forgot/reset?code=' . $code;
+                } else {
+                    $link = 'http://www.hcodecommerce.com.br/forgot/reset?code=' . $code;
+                }
                 $mailer = new Mailer($data['desemail'], $data['desperson'], 'Redefinir Senha Hcode Store', 'forgot', [
                     'name' => $data['desperson'],
                     'link' => $link,
