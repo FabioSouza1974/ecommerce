@@ -152,37 +152,37 @@ $app->post('/checkout', function () {
     User::verifyLogin(false);
     if (!isset($_POST['zipcode']) || $_POST['zipcode'] === '') {
         Address::setMsgError('Informe o CEP');
-        header('Location /checkout');
+        header('Location: /checkout');
         exit;
     }
 
     if (!isset($_POST['desaddress']) || $_POST['desaddress'] === '') {
         Address::setMsgError('Informe o Endereço');
-        header('Location /checkout');
+        header('Location: /checkout');
         exit;
     }
 
     if (!isset($_POST['desdistrict']) || $_POST['desdistrict'] === '') {
         Address::setMsgError('Informe o Bairro');
-        header('Location /checkout');
+        header('Location: /checkout');
         exit;
     }
 
     if (!isset($_POST['descity']) || $_POST['descity'] === '') {
         Address::setMsgError('Informe a Cidade');
-        header('Location /checkout');
+        header('Location: /checkout');
         exit;
     }
 
     if (!isset($_POST['desstate']) || $_POST['desstate'] === '') {
         Address::setMsgError('Informe o Estado');
-        header('Location /checkout');
+        header('Location: /checkout');
         exit;
     }
 
     if (!isset($_POST['descountry']) || $_POST['descountry'] === '') {
         Address::setMsgError('Informe o País');
-        header('Location /checkout');
+        header('Location: /checkout');
         exit;
     }
 
@@ -206,7 +206,7 @@ $app->post('/checkout', function () {
     ]);
     $order->save();
 
-    header('Location /order/' . $order->getidorder());
+    header('Location: /order/' . $order->getidorder());
     exit;
 });
 
@@ -471,4 +471,55 @@ $app->get('/profile/orders/:idorder', function ($idorder) {
         'cart' => $cart->getValues(),
         'products' => $cart->getProducts(),
     ]);
+});
+
+$app->get('/profile/change-password', function () {
+    User::verifyLogin();
+
+    $page = new Page();
+    $page->setTpl('profile-change-password', [
+        'changePassError' => User::getError(),
+        'changePassSuccess' => User::getSuccess(),
+    ]);
+});
+
+$app->post('/profile/change-password', function () {
+    User::verifyLogin();
+
+    if (!isset($_POST['current_pass']) || $_POST['current_pass']) {
+        User::setError('Digite a senha atual');
+        header('Location: /profile/change-password ');
+        exit;
+    }
+
+    if (!isset($_POST['new_pass']) || $_POST['new_pass']) {
+        User::setError('Digite a nova senha');
+        header('Location: /profile/change-password ');
+        exit;
+    }
+
+    if (!isset($_POST['new_pass_confirm']) || $_POST['new_pass_confirm']) {
+        User::setError('Confirme a nova senha');
+        header('Location: /profile/change-password ');
+        exit;
+    }
+
+    if ($_POST['current_pass'] === $_POST['new_pass']) {
+        User::setError('Nova senha deve ser diferente da senha atual');
+        header('Location: /profile/change-password ');
+        exit;
+    }
+
+    $user = User::getFromSession();
+    if (!password_verify($_POST['current_pass'], $user->getdespassword())) {
+        User::setError('Senha inválida');
+        header('Location: /profile/change-password ');
+        exit;
+    }
+
+    $user->setdespassword($_POST['new_pass']);
+    $user->update();
+    User::setSuccess('Senha alterada com sucesso');
+    header('Location: /profile/change-password ');
+    exit;
 });
