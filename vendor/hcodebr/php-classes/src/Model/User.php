@@ -2,9 +2,9 @@
 
 namespace Hcode\Model;
 
+use Hcode\Model;
 use Hcode\DB\Sql;
 use Hcode\Mailer;
-use Hcode\Model;
 
 class User extends Model
 {
@@ -59,7 +59,7 @@ class User extends Model
             $user = new User();
 
             //$data['desperson'] = utf8_encode($data['desperson']);
-            $data['desperson'] = mb_convert_encoding($data['desperson'], 'UTF-8', mb_detect_encoding($data['desperson']));
+            $data['desperson'] = encode_utf8($data['desperson']);
 
             $user->setData($data);
 
@@ -102,7 +102,7 @@ class User extends Model
         $sql = new Sql();
 
         $results = $sql->select('CALL sp_users_save(:desperson, :deslogin, :despassword, :desemail, :nrphone, :inadmin)', [
-            ':desperson' => mb_convert_encoding($this->getiduser(), 'UTF-8'), //utf8_decode($this->getdesperson()), // mb_convert_encoding($utf8_string, 'ISO-8859-1', 'UTF-8');
+            ':desperson' => encode_utf8($this->getiduser()),
             ':deslogin' => $this->getdeslogin(),
             ':despassword' => User::getPasswordHash($this->getdespassword()),
             ':desemail' => $this->getdesemail(),
@@ -124,7 +124,7 @@ class User extends Model
         $data = $results[0];
 
         //$data['desperson'] = utf8_encode($data['desperson']);
-        $data['desperson'] = mb_convert_encoding($data['desperson'], 'UTF-8', mb_detect_encoding($data['desperson']));
+        $data['desperson'] = encode_utf8($data['desperson']);
 
         $this->setData($data);
     }
@@ -134,7 +134,7 @@ class User extends Model
         $sql = new Sql();
 
         $results = $sql->select('CALL sp_usersupdate_save(:iduser, :desperson, :deslogin, :despassword, :desemail, :nrphone, :inadmin)', [
-            ':iduser' => mb_convert_encoding($this->getiduser(), 'UTF-8'), //utf8_decode($this->getiduser()) // mb_convert_encoding($utf8_string, 'ISO-8859-1', 'UTF-8');
+            ':iduser' => encode_utf8($this->getiduser()),
             ':desperson' => $this->getdesperson(),
             ':deslogin' => $this->getdeslogin(),
             ':despassword' => User::getPasswordHash($this->getdespassword()),

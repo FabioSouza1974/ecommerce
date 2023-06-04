@@ -42,14 +42,14 @@ class Address extends Model
         $results = $sql->select('CALL sp_addresses_save(:idaddress, :idperson, :desaddress, :desnumber, :descomplement, :descity, :desstate, :descountry, :deszipcode, :desdistrict)', [
             ':idaddress' => $this->getidaddress(),
             ':idperson' => $this->getidperson(),
-            ':desaddress' => utf8_decode($this->getdesaddress()),
+            ':desaddress' => decode_utf8($this->getdesaddress()), //utf8_decode
             ':desnumber' => $this->getdesnumber(),
-            ':descomplement' => utf8_decode($this->getdescomplement()),
-            ':descity' => utf8_decode($this->getdescity()),
-            ':desstate' => utf8_decode($this->getdesstate()),
-            ':descountry' => utf8_decode($this->getdescountry()),
+            ':descomplement' => decode_utf8($this->getdescomplement()),
+            ':descity' => decode_utf8($this->getdescity()),
+            ':desstate' => decode_utf8($this->getdesstate()),
+            ':descountry' => decode_utf8($this->getdescountry()),
             ':deszipcode' => $this->getdeszipcode(),
-            ':desdistrict' => utf8_decode($this->getdesdistrict()),
+            ':desdistrict' => decode_utf8($this->getdesdistrict()),
         ]);
 
         if (count($results) > 0) {

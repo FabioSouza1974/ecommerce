@@ -46,3 +46,15 @@ function getCartVlSubTotal()
 
     return formatPrice($totals['vlprice']);
 }
+
+function encode_utf8($string)
+{
+    return mb_convert_encoding($string, 'UTF-8', mb_detect_encoding($string));
+    //return mb_convert_encoding($string, 'UTF-8', 'ISO-8859-1');
+}
+
+function decode_utf8($string)
+{
+    return mb_convert_encoding($string, mb_detect_encoding($string), 'UTF-8');
+    //return mb_convert_encoding($string, 'ISO-8859-1', 'UTF-8'); /
+}
