@@ -115,6 +115,10 @@ $app->get('/checkout', function () {
         $address->getdesaddress('');
     }
 
+    if (!$address->getdesnumber()) {
+        $address->getdesnumber('');
+    }
+
     if (!$address->getdescomplement()) {
         $address->getdescomplement('');
     }
@@ -158,6 +162,12 @@ $app->post('/checkout', function () {
 
     if (!isset($_POST['desaddress']) || $_POST['desaddress'] === '') {
         Address::setMsgError('Informe o Endereço');
+        header('Location: /checkout');
+        exit;
+    }
+
+    if (!isset($_POST['desnumber']) || $_POST['desnumber'] === '') {
+        Address::setMsgError('Informe o Numero');
         header('Location: /checkout');
         exit;
     }
